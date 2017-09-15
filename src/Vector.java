@@ -5,7 +5,7 @@ import java.awt.*;
  */
 public class Vector {
 
-    private int x, y, ox, oy;
+    public int x, y, ox, oy;
 
     public Vector(int x, int y, int ox, int oy) {
         this.x = x;
@@ -41,19 +41,39 @@ public class Vector {
         return comp;
     }
 
-    public void setX(int x) {
-        this.x = x;
-    }
 
-    public void setY(int y) {
-        this.y = y;
-    }
+    //uneeded getters and setters because variables are public now
+//    public void setX(int x) {
+//        this.x = x;
+//    }
+//
+//    public void setY(int y) {
+//        this.y = y;
+//    }
+//
+//    public void setOx(int ox) {
+//        this.ox = ox;
+//    }
+//
+//    public void setOy(int oy) {
+//        this.oy = oy;
+//    }
+//
+//    public int getX() {
+//        return x;
+//    }
+//
+//    public int getY() {
+//        return y;
+//    }
+//
+//    public int getOx() {
+//        return ox;
+//    }
+//
+//    public int getOy() {
+//        return oy;
+//    }
 
-    public void setOx(int ox) {
-        this.ox = ox;
-    }
 
-    public void setOy(int oy) {
-        this.oy = oy;
-    }
 }
