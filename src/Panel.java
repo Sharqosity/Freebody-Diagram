@@ -21,6 +21,11 @@ public class Panel extends JPanel{
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
+        RenderingHints rh = new RenderingHints(
+                RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON
+        );
+        g2.setRenderingHints(rh);
         System.out.println(vectors.size());
         for (Vector v:vectors) {
             g2.setColor(Color.black);
