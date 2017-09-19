@@ -48,6 +48,9 @@ public class Panel extends JPanel {
 //            g2.drawLine(v.ox,v.oy,v.x,v.y);
             v.draw(g2);
         }
+
+        g2.setColor(Color.RED);
+        Resultant().draw(g2);
     }
     public Vector Resultant(){
         double sumxcomp = 0;
@@ -57,7 +60,7 @@ public class Panel extends JPanel {
             sumycomp += vectors.get(i).yComp;
 
         }
-        Vector res = new Vector(sumxcomp, sumycomp, getWidth()/2, getHeight()/2);
+        Vector res = new Vector(getWidth()/2 + sumxcomp, getHeight()/2 + sumycomp, getWidth()/2, getHeight()/2);
         return res;
 
 
