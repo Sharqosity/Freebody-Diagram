@@ -34,7 +34,11 @@ public class Panel extends JPanel {
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
+        float opacity = 0.5f;
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
         g2.drawImage(img, 0, 0, getWidth(), getHeight(), null);
+        float o = 1f;
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
         g.fillOval(getWidth()/2-2, getHeight()/2-2, 5, 5);
         RenderingHints rh = new RenderingHints(
                 RenderingHints.KEY_ANTIALIASING,
