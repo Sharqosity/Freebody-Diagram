@@ -5,40 +5,53 @@ import java.awt.*;
  */
 public class Vector {
 
-    public int x, y, ox, oy;
+    public double x, y, ox, oy, xComp, yComp;
 
-    public Vector(int x, int y, int ox, int oy) {
+    public Vector(double x, double y, double ox, double oy) {
         this.x = x;
         this.y = y;
         this.ox = ox;
         this.oy = oy;
+        this.xComp = this.x - this.ox;
+        this.yComp = this.y - this.oy;
     }
 
     public void draw(Graphics2D g2){
-        g2.drawLine(ox, oy, x, y);
+        g2.drawLine((int)(Math.round(ox)), (int)(Math.round(oy)), (int)(Math.round(x)), (int)(Math.round(y)));
     }
 
-    public double[] magDir(double xComp, double yComp){
-        double[] magDir = new double[2];
 
-        double mag = Math.sqrt(Math.pow(xComp,2) + Math.pow(yComp,2));
-        magDir[0] = mag;
-
+    public double Dir(){
         double dir = Math.toDegrees(Math.atan2(yComp, xComp));
-        magDir[1] = dir;
-
-        return magDir;
+        return dir;
+    }
+    public double Mag(){
+        double mag = Math.sqrt(Math.pow(xComp,2) + Math.pow(yComp,2));
+        return mag;
     }
 
-    public double[] Comp(double mag, double dir){
-        double[] comp =new double[2];
 
+
+
+//    public double[] Comp(double mag, double dir){
+//        double[] comp =new double[2];
+//
+//        double xComp = mag*Math.cos(Math.toRadians(dir));
+//        comp[0] = xComp;
+//        double yComp = mag*Math.sin(Math.toRadians(dir));
+//        comp[1] = yComp;
+//
+//        return comp;
+//    }
+
+    public double calcX(double mag, double dir){
         double xComp = mag*Math.cos(Math.toRadians(dir));
-        comp[0] = xComp;
-        double yComp = mag*Math.sin(Math.toRadians(dir));
-        comp[1] = yComp;
+        return xComp;
+    }
 
-        return comp;
+    public double calcY(double mag, double dir){
+        double yComp = mag*Math.sin(Math.toRadians(dir));
+        return yComp;
     }
 
 
