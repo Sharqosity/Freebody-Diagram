@@ -11,14 +11,15 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        int Width = 500;
-        int Height = 700;
+
         JFrame frame = new JFrame("Freebody Diagram Simulator");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setBounds(0,0,Width,Height);
+        frame.setBounds(0,0, 800, 800);
 
         Panel p = new Panel();
+        p.setLayout(null);
         frame.add(p);
+        frame.setResizable(false);
 
         frame.setVisible(true);
 

@@ -21,6 +21,11 @@ public class Panel extends JPanel {
         }catch(Exception e){
             e.printStackTrace();
         }
+
+        String[] dd = {"Radians", "Degrees"};
+        JComboBox<String> selector = new JComboBox<String>(dd);
+        selector.setBounds(20, 20, 101, 20);
+        add(selector);
     }
     Image img;
     ArrayList<Vector> vectors = new ArrayList<>();
@@ -29,8 +34,8 @@ public class Panel extends JPanel {
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
-        g2.drawImage(img, 0, 0, null);
-        g.fillOval(250, 350, 5, 5);
+        g2.drawImage(img, 0, 0, getWidth(), getHeight(), null);
+        g.fillOval(getWidth()/2-2, getHeight()/2-2, 5, 5);
         RenderingHints rh = new RenderingHints(
                 RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON
@@ -52,8 +57,9 @@ public class Panel extends JPanel {
             sumycomp += vectors.get(i).yComp;
 
         }
-        Vector res = new Vector(sumxcomp, sumycomp, 400, 300);
+        Vector res = new Vector(sumxcomp, sumycomp, getWidth()/2, getHeight()/2);
         return res;
+
 
     }
 
@@ -61,7 +67,7 @@ public class Panel extends JPanel {
 
     class CustomMouseListener implements MouseListener {
         public void mouseClicked(MouseEvent e) {
-            vectors.add(new Vector(e.getX(),e.getY(),400,300));
+            vectors.add(new Vector(e.getX(),e.getY(),getWidth()/2,getHeight()/2));
             repaint();
         }
         public void mousePressed(MouseEvent e) {
