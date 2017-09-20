@@ -61,9 +61,13 @@ public class Panel extends JPanel {
         Graphics2D g2 = (Graphics2D)g;
 
         //background
+        float opacity = 0.5f;
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
         g2.drawImage(img, 0, 0, getWidth(), getHeight(), null);
 
         //middle dot
+        float o = 1f;
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
         g.fillOval(getWidth()/2-2, getHeight()/2-2, 5, 5);
 
         //anti-aliasing
@@ -85,18 +89,18 @@ public class Panel extends JPanel {
 //            g2.drawLine(v.ox,v.oy,v.x,v.y);
             v.draw(g2);
         }
-
     }
-
-    private Vector Resultant(){
+    public Vector Resultant(){
         double sumxcomp = 0;
         double sumycomp = 0;
         for (int i = 0; i < vectors.size(); i++) {
             sumxcomp += vectors.get(i).xComp;
             sumycomp += vectors.get(i).yComp;
+
         }
-        Vector res = new Vector(getWidth()/2 + sumxcomp, getHeight()/2 + sumycomp, getWidth()/2, getHeight()/2);
+        Vector res = new Vector(sumxcomp, sumycomp, getWidth()/2, getHeight()/2);
         return res;
+
 
     }
 
