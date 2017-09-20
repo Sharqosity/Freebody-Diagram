@@ -10,9 +10,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
-/**
- * Created by student on 9/15/17.
- */
 public class Panel extends JPanel {
 
     private JButton clearButton = new JButton("Clear");
@@ -51,7 +48,7 @@ public class Panel extends JPanel {
 
         //rad/deg combobox
         String[] dd = {"Radians", "Degrees"};
-        JComboBox<String> selector = new JComboBox<String>(dd);
+        JComboBox<String> selector = new JComboBox<>(dd);
         selector.setBounds(20, 20, 101, 20);
         add(selector);
     }
@@ -63,11 +60,11 @@ public class Panel extends JPanel {
         //background
         float opacity = 0.5f;
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
-//        g2.drawImage(img, 0, 0, getWidth(), getHeight(), null);
+        g2.drawImage(img, 0, 0, getWidth(), getHeight(), null);
 
         //middle dot
         float o = 1f;
-        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, o));
         g.fillOval(getWidth()/2-2, getHeight()/2-2, 5, 5);
 
         //anti-aliasing
@@ -90,7 +87,7 @@ public class Panel extends JPanel {
             v.draw(g2);
         }
     }
-    public Vector Resultant(){
+    private Vector Resultant(){
         double sumxcomp = 0;
         double sumycomp = 0;
         for (int i = 0; i < vectors.size(); i++) {
@@ -98,15 +95,14 @@ public class Panel extends JPanel {
             sumycomp += vectors.get(i).yComp;
 
         }
-        Vector res = new Vector(getWidth()/2 + sumxcomp, getHeight()/2 + sumycomp, getWidth()/2, getHeight()/2);
-        return res;
+        return new Vector(getWidth()/2 + sumxcomp, getHeight()/2 + sumycomp, getWidth()/2, getHeight()/2);
 
 
     }
 
 
 
-    class CustomMouseListener implements MouseListener {
+    private class CustomMouseListener implements MouseListener {
         public void mouseClicked(MouseEvent e) {
             vectors.add(new Vector(e.getX(),e.getY(),getWidth()/2,getHeight()/2));
             repaint();
