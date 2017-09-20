@@ -63,7 +63,7 @@ public class Panel extends JPanel {
         //background
         float opacity = 0.5f;
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
-        g2.drawImage(img, 0, 0, getWidth(), getHeight(), null);
+//        g2.drawImage(img, 0, 0, getWidth(), getHeight(), null);
 
         //middle dot
         float o = 1f;
@@ -98,7 +98,7 @@ public class Panel extends JPanel {
             sumycomp += vectors.get(i).yComp;
 
         }
-        Vector res = new Vector(sumxcomp, sumycomp, getWidth()/2, getHeight()/2);
+        Vector res = new Vector(getWidth()/2 + sumxcomp, getHeight()/2 + sumycomp, getWidth()/2, getHeight()/2);
         return res;
 
 
