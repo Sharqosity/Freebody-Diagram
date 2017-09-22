@@ -22,6 +22,7 @@ public class Main {
         p.setLayout(null);
 
         frame.setVisible(true);
+        frame.setResizable(false);
 
     }
     //hi
