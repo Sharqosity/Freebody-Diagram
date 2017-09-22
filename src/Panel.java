@@ -26,7 +26,7 @@ public class Panel extends JPanel {
             vectors.clear();
             repaint();
         });                  //x, y, width, height
-        clearButton.setBounds(25, 725, 75, 30);
+        clearButton.setBounds(300, 20, 75, 20);
         this.add(clearButton);
 
         //button that removes last vector in array
@@ -36,7 +36,7 @@ public class Panel extends JPanel {
                 repaint();
             }
         });
-        undoButton.setBounds(125, 725, 75, 30);
+        undoButton.setBounds(375, 20, 75, 20);
         this.add(undoButton);
 
         //background
