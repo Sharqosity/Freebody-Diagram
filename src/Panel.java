@@ -3,11 +3,8 @@ import javafx.scene.layout.Pane;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.io.File;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 public class Panel extends JPanel {
@@ -16,10 +13,16 @@ public class Panel extends JPanel {
     private JButton undoButton = new JButton("Undo");
     private Image img;
     private ArrayList<Vector> vectors = new ArrayList<>();
+    private Vector previewVector;
+
+    private Graphics2D g2;
 
     public Panel(){
+        previewVector = new Vector(0,0,getWidth()/2, getHeight()/2);
+
         //adds mouse listener, find the methods at the bottom
         this.addMouseListener(new CustomMouseListener());
+        this.addMouseMotionListener(new CustomMouseMotion());
 
         //button that clears vectors in array list
         clearButton.addActionListener(e -> {
@@ -55,7 +58,11 @@ public class Panel extends JPanel {
 
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D)g;
+        g2 = (Graphics2D)g;
+
+        // we have to update the vector origin here because reasons
+        previewVector.ox = getWidth()/2;
+        previewVector.oy = getHeight()/2;
 
         //background
         float opacity = 0.5f;
@@ -86,6 +93,17 @@ public class Panel extends JPanel {
 //            g2.drawLine(v.ox,v.oy,v.x,v.y);
             v.draw(g2);
         }
+
+        //draw preview vector
+        g2.setColor(Color.BLACK);
+        g2.setStroke(new BasicStroke(2));
+        previewVector.draw(g2);
+        //recompute the comps because we need to do that
+        previewVector.reComp();
+        // draws preview resultant in green
+        g2.setStroke(new BasicStroke(1));
+        g2.setColor(Color.GREEN);
+        previewResultant().draw(g2);
     }
     private Vector Resultant(){
         double sumxcomp = 0;
@@ -100,7 +118,18 @@ public class Panel extends JPanel {
 
     }
 
+    private Vector previewResultant() {
+        double sumxcomp = 0;
+        double sumycomp = 0;
+        for (int i = 0; i < vectors.size(); i++) {
+            sumxcomp += vectors.get(i).xComp;
+            sumycomp += vectors.get(i).yComp;
 
+        }
+        sumxcomp += previewVector.xComp;
+        sumycomp += previewVector.yComp;
+        return new Vector(getWidth()/2 + sumxcomp, getHeight()/2 + sumycomp, getWidth()/2, getHeight()/2);
+    }
 
     private class CustomMouseListener implements MouseListener {
         public void mouseClicked(MouseEvent e) {
@@ -114,6 +143,18 @@ public class Panel extends JPanel {
         public void mouseEntered(MouseEvent e) {
         }
         public void mouseExited(MouseEvent e) {
+        }
+    }
+
+    private class CustomMouseMotion implements MouseMotionListener {
+
+        public void mouseMoved(MouseEvent e) {
+            previewVector.x = e.getX();
+            previewVector.y = e.getY();
+            repaint();
+        }
+        public void mouseDragged(MouseEvent e) {
+
         }
     }
 

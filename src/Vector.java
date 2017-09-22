@@ -30,6 +30,11 @@ public class Vector {
         return mag;
     }
 
+    public void reComp() {
+        this.xComp = this.x - this.ox;
+        this.yComp = this.y - this.oy;
+    }
+
 
 
 
