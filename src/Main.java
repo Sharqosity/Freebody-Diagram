@@ -7,7 +7,7 @@ import java.awt.*;
 public class Main {
 
     public Main() {
-        //hehe
+
     }
 
     public static void main(String[] args) {
