@@ -22,11 +22,12 @@ public class Vector {
 
 
     public double Dir(){
-        double dir = Math.toDegrees(Math.atan2(yComp, xComp));
+        double dir = (Math.toDegrees(-Math.atan2(yComp, xComp)));
         return dir;
     }
     public double Mag(){
-        double mag = Math.sqrt(Math.pow(xComp,2) + Math.pow(yComp,2));
+        double mag = (Math.sqrt(Math.pow(xComp,2) + Math.pow(yComp,2)));
+
         return mag;
     }
 
