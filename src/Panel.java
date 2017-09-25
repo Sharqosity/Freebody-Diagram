@@ -1,4 +1,5 @@
 import javax.imageio.ImageIO;
+
 import javafx.scene.layout.Pane;
 
 import javax.swing.*;
@@ -19,16 +20,16 @@ public class Panel extends JPanel {
 
     private Graphics2D g2;
 
-    public Panel(){
+    public Panel() {
         in = new JTextArea();
-        in.setBounds(100,100,100,20);
+        in.setBounds(25, 60, 100, 20);
         in.getDocument().putProperty("filterNewlines", Boolean.TRUE);
         add(in);
 
         // adds key listener
         in.addKeyListener(new CustomKeyListener());
 
-        previewVector = new Vector(0,0,getWidth()/2, getHeight()/2);
+        previewVector = new Vector(0, 0, getWidth() / 2, getHeight() / 2);
 
         //adds mouse listener, find the methods at the bottom
         this.addMouseListener(new CustomMouseListener());
@@ -45,7 +46,7 @@ public class Panel extends JPanel {
         //button that removes last vector in array
         undoButton.addActionListener(e -> {
             if (!vectors.isEmpty()) {
-                vectors.remove(vectors.size()-1);
+                vectors.remove(vectors.size() - 1);
                 repaint();
             }
         });
@@ -53,9 +54,9 @@ public class Panel extends JPanel {
         this.add(undoButton);
 
         //background
-        try{
+        try {
             img = ImageIO.read(new File("Res/Vector Meme.jpg"));
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -66,13 +67,13 @@ public class Panel extends JPanel {
         add(selector);
     }
 
-    public void paintComponent(Graphics g){
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g2 = (Graphics2D)g;
+        g2 = (Graphics2D) g;
 
         // we have to update the vector origin here because reasons
-        previewVector.ox = getWidth()/2;
-        previewVector.oy = getHeight()/2;
+        previewVector.ox = getWidth() / 2;
+        previewVector.oy = getHeight() / 2;
 
         //background
         float opacity = 0.5f;
@@ -82,7 +83,7 @@ public class Panel extends JPanel {
         //middle dot
         float o = 1f;
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, o));
-        g.fillOval(getWidth()/2-2, getHeight()/2-2, 5, 5);
+        g.fillOval(getWidth() / 2 - 2, getHeight() / 2 - 2, 5, 5);
 
         //anti-aliasing
         RenderingHints rh = new RenderingHints(
@@ -97,7 +98,7 @@ public class Panel extends JPanel {
         Resultant().draw(g2);
 
         //vectors
-        for (Vector v:vectors) {
+        for (Vector v : vectors) {
             g2.setColor(Color.black);
             g2.setStroke(new BasicStroke(2));
 //            g2.drawLine(v.ox,v.oy,v.x,v.y);
@@ -115,7 +116,8 @@ public class Panel extends JPanel {
         g2.setColor(Color.GREEN);
         previewResultant().draw(g2);
     }
-    private Vector Resultant(){
+
+    private Vector Resultant() {
         double sumxcomp = 0;
         double sumycomp = 0;
         for (int i = 0; i < vectors.size(); i++) {
@@ -123,7 +125,7 @@ public class Panel extends JPanel {
             sumycomp += vectors.get(i).yComp;
 
         }
-        return new Vector(getWidth()/2 + sumxcomp, getHeight()/2 + sumycomp, getWidth()/2, getHeight()/2);
+        return new Vector(getWidth() / 2 + sumxcomp, getHeight() / 2 + sumycomp, getWidth() / 2, getHeight() / 2);
 
 
     }
@@ -138,21 +140,25 @@ public class Panel extends JPanel {
         }
         sumxcomp += previewVector.xComp;
         sumycomp += previewVector.yComp;
-        return new Vector(getWidth()/2 + sumxcomp, getHeight()/2 + sumycomp, getWidth()/2, getHeight()/2);
+        return new Vector(getWidth() / 2 + sumxcomp, getHeight() / 2 + sumycomp, getWidth() / 2, getHeight() / 2);
     }
 
     private class CustomMouseListener implements MouseListener {
         public void mouseClicked(MouseEvent e) {
             requestFocus();
-            vectors.add(new Vector(e.getX(),e.getY(),getWidth()/2,getHeight()/2));
+            vectors.add(new Vector(e.getX(), e.getY(), getWidth() / 2, getHeight() / 2));
             repaint();
         }
+
         public void mousePressed(MouseEvent e) {
         }
+
         public void mouseReleased(MouseEvent e) {
         }
+
         public void mouseEntered(MouseEvent e) {
         }
+
         public void mouseExited(MouseEvent e) {
         }
     }
@@ -166,9 +172,12 @@ public class Panel extends JPanel {
         @Override
         public void keyPressed(KeyEvent e) {
 
-            if(e.getKeyCode() == KeyEvent.VK_ENTER){ // gets input text and clears textarea
+            if (e.getKeyCode() == KeyEvent.VK_ENTER) { // gets input text and clears textarea
                 testin = in.getText();
-                System.out.println(testin);
+                String[] parts = testin.split(", ");
+
+                Vector v = new Vector(Double.parseDouble(parts[0]) + getWidth() / 2, -Double.parseDouble(parts[1]) + getHeight() / 2, getWidth() / 2, getHeight() / 2);
+                vectors.add(v);
                 e.consume();
                 requestFocus();
                 repaint();
@@ -192,6 +201,7 @@ public class Panel extends JPanel {
             previewVector.y = e.getY();
             repaint();
         }
+
         public void mouseDragged(MouseEvent e) {
 
         }
