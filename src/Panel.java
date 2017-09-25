@@ -17,11 +17,16 @@ public class Panel extends JPanel {
     private String testin;
     private ArrayList<Vector> vectors = new ArrayList<>();
     private Vector previewVector;
+    private boolean meme;
     private boolean snapToGrid;
 
     private Graphics2D g2;
 
     public Panel() {
+        //meme
+        meme = false;
+
+        //text area
         in = new JTextArea();
         in.setBounds(25, 60, 100, 20);
         in.getDocument().putProperty("filterNewlines", Boolean.TRUE);
@@ -79,11 +84,6 @@ public class Panel extends JPanel {
         previewVector.ox = getWidth() / 2;
         previewVector.oy = getHeight() / 2;
 
-        //background
-        float opacity = 0.5f;
-        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
-        g2.drawImage(img, 0, 0, getWidth(), getHeight(), null);
-
         //middle dot
         float o = 1f;
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, o));
@@ -106,7 +106,9 @@ public class Panel extends JPanel {
         g2.setColor(Color.BLACK);
         if(vectors.size() != 0) {
 
-            g2.drawString("Resultant:" + Math.round(Resultant().Mag()*1000.0)/1000.0 + ", " + Math.round(Resultant().Dir() * 1000.0)/1000.0 + "°", 10, 100);
+            g2.drawString("Resultant Mag, Dir:" + Math.round(Resultant().Mag()*1000.0)/1000.0 + ", " + Math.round(Resultant().Dir() * 1000.0)/1000.0 + "°", 10, 100);
+            g2.drawString("Resultant X Comp, Y Comp:" + Math.round(Resultant().xComp*1000.0)/1000.0 + ", " + -Math.round(Resultant().yComp * 1000.0)/1000.0, 10, 120);
+
         }
 
         //vectors
@@ -127,6 +129,13 @@ public class Panel extends JPanel {
         g2.setStroke(new BasicStroke(1));
         g2.setColor(Color.GREEN);
         previewResultant().draw(g2);
+
+        //background
+        if (meme) {
+//            float opacity = 0.5f;
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
+            g2.drawImage(img, 0, 0, getWidth(), getHeight(), null);
+        }
     }
     private Vector Resultant(){
         double sumxcomp = 0;
@@ -188,10 +197,16 @@ public class Panel extends JPanel {
 
             if (e.getKeyCode() == KeyEvent.VK_ENTER) { // gets input text and clears textarea
                 testin = in.getText();
-                String[] parts = testin.split(", ");
 
-                Vector v = new Vector(Double.parseDouble(parts[0]) + getWidth() / 2, -Double.parseDouble(parts[1]) + getHeight() / 2, getWidth() / 2, getHeight() / 2);
-                vectors.add(v);
+                if (testin.equals("meme")){
+                    meme = true;
+                }
+                else {
+                    String[] parts = testin.split(", ");
+                    Vector v = new Vector(Double.parseDouble(parts[0]) + getWidth() / 2, -Double.parseDouble(parts[1]) + getHeight() / 2, getWidth() / 2, getHeight() / 2);
+                    vectors.add(v);
+                }
+
                 e.consume();
                 requestFocus();
                 repaint();
