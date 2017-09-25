@@ -14,15 +14,18 @@ public class Panel extends JPanel {
     private Image img;
     private ArrayList<Vector> vectors = new ArrayList<>();
     private Vector previewVector;
+    private boolean snapToGrid;
 
     private Graphics2D g2;
 
     public Panel(){
+        snapToGrid = false;
         previewVector = new Vector(0,0,getWidth()/2, getHeight()/2);
 
         //adds mouse listener, find the methods at the bottom
         this.addMouseListener(new CustomMouseListener());
         this.addMouseMotionListener(new CustomMouseMotion());
+        this.addKeyListener(new CustomKeyListener());
 
         //button that clears vectors in array list
         clearButton.addActionListener(e -> {
@@ -104,6 +107,7 @@ public class Panel extends JPanel {
         g2.setStroke(new BasicStroke(1));
         g2.setColor(Color.GREEN);
         previewResultant().draw(g2);
+        System.out.println(snapToGrid);
     }
     private Vector Resultant(){
         double sumxcomp = 0;
@@ -133,7 +137,10 @@ public class Panel extends JPanel {
 
     private class CustomMouseListener implements MouseListener {
         public void mouseClicked(MouseEvent e) {
-            vectors.add(new Vector(e.getX(),e.getY(),getWidth()/2,getHeight()/2));
+            if(snapToGrid)
+                vectors.add(new Vector(Math.round(e.getX()/10)*10,Math.round(e.getY()/10)*10,getWidth()/2,getHeight()/2));
+            else
+                vectors.add(new Vector(e.getX(),e.getY(),getWidth()/2,getHeight()/2));
             repaint();
         }
         public void mousePressed(MouseEvent e) {
@@ -149,12 +156,37 @@ public class Panel extends JPanel {
     private class CustomMouseMotion implements MouseMotionListener {
 
         public void mouseMoved(MouseEvent e) {
-            previewVector.x = e.getX();
-            previewVector.y = e.getY();
+            if(snapToGrid) {
+                previewVector.x = Math.round(e.getX()/10)*10;
+                previewVector.y = Math.round(e.getY()/10)*10;
+                System.out.println(previewVector.x);
+                System.out.println(previewVector.y + "\n");
+            } else {
+                previewVector.x = e.getX();
+                previewVector.y = e.getY();
+            }
             repaint();
         }
         public void mouseDragged(MouseEvent e) {
 
+        }
+    }
+
+    private class CustomKeyListener implements KeyListener {
+        @Override
+        public void keyPressed(KeyEvent e) {
+            System.out.println(e.getKeyChar());
+            if(e.getKeyCode() == KeyEvent.VK_SHIFT) {
+                snapToGrid = true;
+            }
+        }
+        @Override
+        public void keyReleased(KeyEvent e) {
+            if(e.getKeyCode() == KeyEvent.VK_SHIFT) {
+                snapToGrid = false;
+            }
+        }
+        public void keyTyped(KeyEvent e) {
         }
     }
 

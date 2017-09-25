@@ -20,6 +20,8 @@ public class Main {
         Panel p = new Panel();
         frame.add(p);
         p.setLayout(null);
+        p.setFocusable(true);
+        p.grabFocus();
 
         frame.setVisible(true);
         frame.setResizable(false);
