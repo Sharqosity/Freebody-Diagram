@@ -11,13 +11,23 @@ public class Panel extends JPanel {
 
     private JButton clearButton = new JButton("Clear");
     private JButton undoButton = new JButton("Undo");
+    private JTextArea in;
     private Image img;
+    private String testin;
     private ArrayList<Vector> vectors = new ArrayList<>();
     private Vector previewVector;
 
     private Graphics2D g2;
 
     public Panel(){
+        in = new JTextArea();
+        in.setBounds(100,100,100,20);
+        in.getDocument().putProperty("filterNewlines", Boolean.TRUE);
+        add(in);
+
+        // adds key listener
+        in.addKeyListener(new CustomKeyListener());
+
         previewVector = new Vector(0,0,getWidth()/2, getHeight()/2);
 
         //adds mouse listener, find the methods at the bottom
@@ -133,6 +143,7 @@ public class Panel extends JPanel {
 
     private class CustomMouseListener implements MouseListener {
         public void mouseClicked(MouseEvent e) {
+            requestFocus();
             vectors.add(new Vector(e.getX(),e.getY(),getWidth()/2,getHeight()/2));
             repaint();
         }
@@ -145,6 +156,34 @@ public class Panel extends JPanel {
         public void mouseExited(MouseEvent e) {
         }
     }
+
+    private class CustomKeyListener implements KeyListener {
+        @Override
+        public void keyTyped(KeyEvent e) {
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+
+            if(e.getKeyCode() == KeyEvent.VK_ENTER){ // gets input text and clears textarea
+                testin = in.getText();
+                System.out.println(testin);
+                e.consume();
+                requestFocus();
+                repaint();
+                in.setText("");
+
+            }
+
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+
+        }
+    }
+
 
     private class CustomMouseMotion implements MouseMotionListener {
 
