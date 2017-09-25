@@ -67,6 +67,8 @@ public class Panel extends JPanel {
         add(selector);
     }
 
+
+
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g2 = (Graphics2D) g;
@@ -85,6 +87,9 @@ public class Panel extends JPanel {
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, o));
         g.fillOval(getWidth() / 2 - 2, getHeight() / 2 - 2, 5, 5);
 
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, o));
+        g.fillOval(getWidth()/2-2, getHeight()/2-2, 5, 5);
+
         //anti-aliasing
         RenderingHints rh = new RenderingHints(
                 RenderingHints.KEY_ANTIALIASING,
@@ -96,6 +101,11 @@ public class Panel extends JPanel {
         g2.setStroke(new BasicStroke(1));
         g2.setColor(Color.RED);
         Resultant().draw(g2);
+        g2.setColor(Color.BLACK);
+        if(vectors.size() != 0) {
+
+            g2.drawString("Resultant:" + Math.round(Resultant().Mag()*1000.0)/1000.0 + ", " + Math.round(Resultant().Dir() * 1000.0)/1000.0 + "°", 10, 100);
+        }
 
         //vectors
         for (Vector v : vectors) {
@@ -182,6 +192,7 @@ public class Panel extends JPanel {
                 requestFocus();
                 repaint();
                 in.setText("");
+
 
             }
 
