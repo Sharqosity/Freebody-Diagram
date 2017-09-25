@@ -11,7 +11,9 @@ public class Panel extends JPanel {
 
     private JButton clearButton = new JButton("Clear");
     private JButton undoButton = new JButton("Undo");
+    private JTextArea in;
     private Image img;
+    private String testin;
     private ArrayList<Vector> vectors = new ArrayList<>();
     private Vector previewVector;
     private boolean snapToGrid;
@@ -19,7 +21,15 @@ public class Panel extends JPanel {
     private Graphics2D g2;
 
     public Panel(){
+        in = new JTextArea();
+        in.setBounds(100,100,100,20);
+        in.getDocument().putProperty("filterNewlines", Boolean.TRUE);
+        add(in);
+
         snapToGrid = false;
+        // adds key listener
+        in.addKeyListener(new CustomKeyListener());
+
         previewVector = new Vector(0,0,getWidth()/2, getHeight()/2);
 
         //adds mouse listener, find the methods at the bottom
@@ -107,7 +117,6 @@ public class Panel extends JPanel {
         g2.setStroke(new BasicStroke(1));
         g2.setColor(Color.GREEN);
         previewResultant().draw(g2);
-        System.out.println(snapToGrid);
     }
     private Vector Resultant(){
         double sumxcomp = 0;
@@ -137,6 +146,7 @@ public class Panel extends JPanel {
 
     private class CustomMouseListener implements MouseListener {
         public void mouseClicked(MouseEvent e) {
+            requestFocus();
             if(snapToGrid)
                 vectors.add(new Vector(Math.round(e.getX()/10)*10,Math.round(e.getY()/10)*10,getWidth()/2,getHeight()/2));
             else
@@ -153,14 +163,40 @@ public class Panel extends JPanel {
         }
     }
 
+    private class CustomKeyListener implements KeyListener {
+        @Override
+        public void keyTyped(KeyEvent e) {
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+
+            if(e.getKeyCode() == KeyEvent.VK_ENTER){ // gets input text and clears textarea
+                testin = in.getText();
+                System.out.println(testin);
+                e.consume();
+                requestFocus();
+                repaint();
+                in.setText("");
+
+            }
+
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+
+        }
+    }
+
+
     private class CustomMouseMotion implements MouseMotionListener {
 
         public void mouseMoved(MouseEvent e) {
             if(snapToGrid) {
                 previewVector.x = Math.round(e.getX()/10)*10;
                 previewVector.y = Math.round(e.getY()/10)*10;
-                System.out.println(previewVector.x);
-                System.out.println(previewVector.y + "\n");
             } else {
                 previewVector.x = e.getX();
                 previewVector.y = e.getY();
@@ -169,24 +205,6 @@ public class Panel extends JPanel {
         }
         public void mouseDragged(MouseEvent e) {
 
-        }
-    }
-
-    private class CustomKeyListener implements KeyListener {
-        @Override
-        public void keyPressed(KeyEvent e) {
-            System.out.println(e.getKeyChar());
-            if(e.getKeyCode() == KeyEvent.VK_SHIFT) {
-                snapToGrid = true;
-            }
-        }
-        @Override
-        public void keyReleased(KeyEvent e) {
-            if(e.getKeyCode() == KeyEvent.VK_SHIFT) {
-                snapToGrid = false;
-            }
-        }
-        public void keyTyped(KeyEvent e) {
         }
     }
 
