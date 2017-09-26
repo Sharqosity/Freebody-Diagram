@@ -15,14 +15,15 @@ public class Panel extends JPanel {
     private String testin;
     private ArrayList<Vector> vectors = new ArrayList<>();
     private Vector previewVector;
-    private boolean meme;
-    private boolean snapToGrid;
+    private boolean meme, snapToGrid, mdc;
+    private JComboBox<String> selector, s;
 
     private Graphics2D g2;
 
     public Panel() {
         //meme
         meme = false;
+        mdc = true;
 
         //text area
         in = new JTextArea();
@@ -67,9 +68,27 @@ public class Panel extends JPanel {
 
         //rad/deg combobox
         String[] dd = {"Radians", "Degrees"};
-        JComboBox<String> selector = new JComboBox<>(dd);
+        selector = new JComboBox<>(dd);
         selector.setBounds(20, 20, 101, 20);
         add(selector);
+
+        //magdir/components combobox
+        String[] c = {"Magnitude, Direction", "X Component, Y Component"};
+        s = new JComboBox<>(c);
+        s.setBounds(125, 20, 165, 20);
+        s.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String choice = (String) s.getSelectedItem();
+                if (choice.equals("Magnitude, Direction")){
+                    mdc = true;
+                }
+                else if (choice.equals("X Component, Y Component")){
+                    mdc = false;
+                }
+            }
+        });
+        add(s);
     }
 
 
@@ -104,8 +123,8 @@ public class Panel extends JPanel {
         g2.setColor(Color.BLACK);
         if(vectors.size() != 0) {
 
-            g2.drawString("resultant mag, dir:" + Math.round(resultant().mag()*1000.0)/1000.0 + ", " + Math.round(resultant().dir() * 1000.0)/1000.0 + "°", 10, 100);
-            g2.drawString("resultant X Comp, Y Comp:" + Math.round(resultant().xComp*1000.0)/1000.0 + ", " + -Math.round(resultant().yComp * 1000.0)/1000.0, 10, 120);
+            g2.drawString("Resultant Mag, Dir: " + Math.round(resultant().mag()*1000.0)/1000.0 + ", " + Math.round(resultant().dir() * 1000.0)/1000.0 + "°", 10, 100);
+            g2.drawString("Resultant X Comp, Y Comp: " + Math.round(resultant().xComp*1000.0)/1000.0 + ", " + -Math.round(resultant().yComp * 1000.0)/1000.0, 10, 120);
 
         }
 
@@ -201,8 +220,17 @@ public class Panel extends JPanel {
                 }
                 else {
                     String[] parts = testin.split(", ");
-                    Vector v = new Vector(Double.parseDouble(parts[0]) + getWidth() / 2, -Double.parseDouble(parts[1]) + getHeight() / 2, getWidth() / 2, getHeight() / 2);
-                    vectors.add(v);
+
+                    Vector v = new Vector(0, 0, getWidth() / 2, getHeight() / 2);
+
+                    if(mdc){
+                        Vector mdv = new Vector (v.calcX(Double.parseDouble(parts[0]), Double.parseDouble(parts[1])) + getWidth()/2, -v.calcY(Double.parseDouble(parts[0]), Double.parseDouble(parts[1])) + getHeight()/2, getWidth()/2, getHeight()/2);
+                        vectors.add(mdv);
+                    }
+                    else {
+                        Vector cv = new Vector(Double.parseDouble(parts[0]) + getWidth() / 2, -Double.parseDouble(parts[1]) + getHeight() / 2, getWidth()/2, getHeight()/2);
+                        vectors.add(cv);
+                    }
                 }
 
                 e.consume();
