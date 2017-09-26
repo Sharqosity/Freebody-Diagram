@@ -1,7 +1,5 @@
 import javax.imageio.ImageIO;
 
-import javafx.scene.layout.Pane;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -102,12 +100,12 @@ public class Panel extends JPanel {
         //resultant (draw first so it appears under)
         g2.setStroke(new BasicStroke(1));
         g2.setColor(Color.RED);
-        Resultant().draw(g2);
+        resultant().draw(g2);
         g2.setColor(Color.BLACK);
         if(vectors.size() != 0) {
 
-            g2.drawString("Resultant Mag, Dir:" + Math.round(Resultant().Mag()*1000.0)/1000.0 + ", " + Math.round(Resultant().Dir() * 1000.0)/1000.0 + "°", 10, 100);
-            g2.drawString("Resultant X Comp, Y Comp:" + Math.round(Resultant().xComp*1000.0)/1000.0 + ", " + -Math.round(Resultant().yComp * 1000.0)/1000.0, 10, 120);
+            g2.drawString("resultant mag, dir:" + Math.round(resultant().mag()*1000.0)/1000.0 + ", " + Math.round(resultant().dir() * 1000.0)/1000.0 + "°", 10, 100);
+            g2.drawString("resultant X Comp, Y Comp:" + Math.round(resultant().xComp*1000.0)/1000.0 + ", " + -Math.round(resultant().yComp * 1000.0)/1000.0, 10, 120);
 
         }
 
@@ -137,7 +135,7 @@ public class Panel extends JPanel {
             g2.drawImage(img, 0, 0, getWidth(), getHeight(), null);
         }
     }
-    private Vector Resultant(){
+    private Vector resultant(){
         double sumxcomp = 0;
         double sumycomp = 0;
         for (int i = 0; i < vectors.size(); i++) {

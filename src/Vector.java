@@ -21,11 +21,11 @@ public class Vector {
     }
 
 
-    public double Dir(){
+    public double dir(){
         double dir = (Math.toDegrees(-Math.atan2(yComp, xComp)));
         return dir;
     }
-    public double Mag(){
+    public double mag(){
         double mag = (Math.sqrt(Math.pow(xComp,2) + Math.pow(yComp,2)));
 
         return mag;
