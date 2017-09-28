@@ -15,8 +15,10 @@ public class Panel extends JPanel {
     private String testin;
     private ArrayList<Vector> vectors = new ArrayList<>();
     private Vector previewVector;
-    private boolean meme, snapToGrid, mdc;
+    private boolean meme, snapToGrid, mdc, rd;
+    private String[] dd = {"Radians", "Degrees"};
     private JComboBox<String> selector, s;
+    private String degrees;
 
     private Graphics2D g2;
 
@@ -24,6 +26,7 @@ public class Panel extends JPanel {
         //meme
         meme = false;
         mdc = true;
+        rd = true;
 
         //text area
         in = new JTextArea();
@@ -67,9 +70,19 @@ public class Panel extends JPanel {
         }
 
         //rad/deg combobox
-        String[] dd = {"Radians", "Degrees"};
+        //String[] dd = {"Radians", "Degrees"};
         selector = new JComboBox<>(dd);
         selector.setBounds(20, 20, 101, 20);
+        selector.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String huh = (String) selector.getSelectedItem();
+                if (huh.equals("Radians"))
+                    rd = true;
+                else if (huh.equals("Degrees"))
+                    rd = false;
+            }
+        });
         add(selector);
 
         //magdir/components combobox
@@ -121,9 +134,27 @@ public class Panel extends JPanel {
         g2.setColor(Color.RED);
         resultant().draw(g2);
         g2.setColor(Color.BLACK);
+
+        if(selector.getSelectedItem() == "Degrees")
+            degrees = Math.round(resultant().dir() * 1000.0)/1000.0 + "°";
+
+        if(selector.getSelectedItem() == "Radians"){
+            if(resultant().y == 0 && resultant().x >= getWidth()/2){
+                degrees = 0 + "/" + Math.round((2*Math.PI + Math.toRadians(resultant().dir())) * 1000.0) / 1000.0 + " Radians";
+            }
+
+            if(resultant().y >= getHeight()/2){
+                degrees = Math.round((2*Math.PI + Math.toRadians(resultant().dir())) * 1000.0) / 1000.0 + " Radians";
+            }
+
+            else{
+                degrees = Math.round((Math.toRadians(resultant().dir())) * 1000.0) / 1000.0 + " Radians";
+            }
+        }
+
         if(vectors.size() != 0) {
 
-            g2.drawString("Resultant Mag, Dir: " + Math.round(resultant().mag()*1000.0)/1000.0 + ", " + Math.round(resultant().dir() * 1000.0)/1000.0 + "°", 10, 100);
+            g2.drawString("Resultant Mag, Dir: " + Math.round(resultant().mag()*1000.0)/1000.0 + ", " + degrees, 10, 100);
             g2.drawString("Resultant X Comp, Y Comp: " + Math.round(resultant().xComp*1000.0)/1000.0 + ", " + -Math.round(resultant().yComp * 1000.0)/1000.0, 10, 120);
 
         }
@@ -224,8 +255,14 @@ public class Panel extends JPanel {
                     Vector v = new Vector(0, 0, getWidth() / 2, getHeight() / 2);
 
                     if(mdc){
-                        Vector mdv = new Vector (v.calcX(Double.parseDouble(parts[0]), Double.parseDouble(parts[1])) + getWidth()/2, -v.calcY(Double.parseDouble(parts[0]), Double.parseDouble(parts[1])) + getHeight()/2, getWidth()/2, getHeight()/2);
-                        vectors.add(mdv);
+                        if (rd){
+                            Vector mdrv = new Vector(v.calcX(Double.parseDouble(parts[0]), Math.toDegrees(Double.parseDouble(parts[1]))) + getWidth() / 2, -v.calcY(Double.parseDouble(parts[0]), Math.toDegrees(Double.parseDouble(parts[1]))) + getHeight() / 2, getWidth() / 2, getHeight() / 2);
+                            vectors.add(mdrv);
+                        }
+                        else {
+                            Vector mddv = new Vector(v.calcX(Double.parseDouble(parts[0]), Double.parseDouble(parts[1])) + getWidth() / 2, -v.calcY(Double.parseDouble(parts[0]), Double.parseDouble(parts[1])) + getHeight() / 2, getWidth() / 2, getHeight() / 2);
+                            vectors.add(mddv);
+                        }
                     }
                     else {
                         Vector cv = new Vector(Double.parseDouble(parts[0]) + getWidth() / 2, -Double.parseDouble(parts[1]) + getHeight() / 2, getWidth()/2, getHeight()/2);
