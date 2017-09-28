@@ -136,7 +136,12 @@ public class Panel extends JPanel {
         g2.setColor(Color.BLACK);
 
         if(selector.getSelectedItem() == "Degrees")
-            degrees = Math.round(resultant().dir() * 1000.0)/1000.0 + "°";
+            if (-resultant().yComp < 0){
+                degrees = 360 + Math.round(resultant().dir() * 1000.0) / 1000.0 + "°";
+            }
+            else {
+                degrees = Math.round(resultant().dir() * 1000.0) / 1000.0 + "°";
+            }
 
         if(selector.getSelectedItem() == "Radians"){
             if(resultant().y == 0 && resultant().x >= getWidth()/2){
