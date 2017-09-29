@@ -4,6 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 public class Panel extends JPanel {
@@ -254,6 +257,9 @@ public class Panel extends JPanel {
                 if (testin.equals("meme")){
                     meme = true;
                 }
+                else if (testin.equals("whomst")) {
+                    openLink();
+                }
                 else {
                     String[] parts = testin.split(", ");
 
@@ -307,6 +313,22 @@ public class Panel extends JPanel {
 
         public void mouseDragged(MouseEvent e) {
 
+        }
+    }
+
+    private void openLink() {
+        try {
+            if (Desktop.isDesktopSupported()) {
+                Desktop.getDesktop().browse(new URI("https://www.youtube.com/watch?v=QoCcDi8zH8M"));
+            }
+        } catch (URISyntaxException e) {
+            System.out.println("URI Syntax Exception!");
+            System.out.println("----------------------");
+            e.printStackTrace();
+        } catch (IOException e) {
+            System.out.println("I/O Exception!");
+            System.out.println("----------------------");
+            e.printStackTrace();
         }
     }
 
