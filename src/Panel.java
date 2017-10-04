@@ -8,11 +8,8 @@ import java.util.ArrayList;
 
 public class Panel extends JPanel {
 
-    private JButton clearButton = new JButton("Clear");
-    private JButton undoButton = new JButton("Undo");
     private JTextArea in;
     private Image img;
-    private String testin;
     private ArrayList<Vector> vectors = new ArrayList<>();
     private Vector previewVector;
     private boolean meme, snapToGrid, mdc;
@@ -21,6 +18,9 @@ public class Panel extends JPanel {
     private Graphics2D g2;
 
     public Panel() {
+        JButton clearButton = new JButton("Clear");
+        JButton undoButton = new JButton("Undo");
+
         //meme
         meme = false;
         mdc = true;
@@ -76,16 +76,13 @@ public class Panel extends JPanel {
         String[] c = {"Magnitude, Direction", "X Component, Y Component"};
         s = new JComboBox<>(c);
         s.setBounds(125, 20, 165, 20);
-        s.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String choice = (String) s.getSelectedItem();
-                if (choice.equals("Magnitude, Direction")){
-                    mdc = true;
-                }
-                else if (choice.equals("X Component, Y Component")){
-                    mdc = false;
-                }
+        s.addActionListener(e -> {
+            String choice = (String) s.getSelectedItem();
+            if (choice.equals("Magnitude, Direction")){
+                mdc = true;
+            }
+            else if (choice.equals("X Component, Y Component")){
+                mdc = false;
             }
         });
         add(s);
@@ -208,7 +205,7 @@ public class Panel extends JPanel {
         public void keyPressed(KeyEvent e) {
 
             if (e.getKeyCode() == KeyEvent.VK_ENTER) { // gets input text and clears textarea
-                testin = in.getText();
+                String testin = in.getText();
 
                 if (testin.equals("meme")){
                     meme = true;
