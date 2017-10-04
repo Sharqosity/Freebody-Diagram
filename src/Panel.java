@@ -97,24 +97,19 @@ public class Panel extends JPanel {
         super.paintComponent(g);
         g2 = (Graphics2D) g;
 
-        // we have to update the vector origin here because reasons
-        previewVector.ox = getWidth() / 2;
-        previewVector.oy = getHeight() / 2;
-
-        //middle dot
-        float o = 1f;
-        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, o));
-        g.fillOval(getWidth() / 2 - 2, getHeight() / 2 - 2, 5, 5);
-
-        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, o));
-        g.fillOval(getWidth()/2-2, getHeight()/2-2, 5, 5);
-
         //anti-aliasing
         RenderingHints rh = new RenderingHints(
                 RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON
         );
         g2.setRenderingHints(rh);
+
+        // we have to update the vector origin here because reasons
+        previewVector.ox = getWidth() / 2;
+        previewVector.oy = getHeight() / 2;
+
+        //middle dot
+        g2.fillOval(getWidth() / 2 - 2, getHeight() / 2 - 2, 5, 5);
 
         //resultant (draw first so it appears under)
         g2.setStroke(new BasicStroke(1));
@@ -241,11 +236,17 @@ public class Panel extends JPanel {
 
             }
 
+            if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
+                snapToGrid = true;
+            }
+
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
-
+            if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
+                snapToGrid = false;
+            }
         }
     }
 
